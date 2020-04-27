@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Backup the most important directories into an archive named after
+# the machine this script is currently running on:
+
+# If --dry-run is on then --stats needs to be off
+stats_opt=${BORG_DRY_RUN:=--stats}
+
+# Only auto labels are pruned
+BORG_ARCHIVE_LABEL=${BORG_ARCHIVE_LABEL:-'auto'}
+archive_name="{hostname}-${BORG_ARCHIVE_LABEL}-{now}"
+
+borg create                         \
+    ${BORG_DRY_RUN}                 \
+    --verbose                       \
+    --filter AME                    \
+    --list                          \
+    ${stats_opt}                    \
+    --show-rc                       \
+    --compression lz4               \
+    --exclude-caches                \
+    --exclude '/home/*/.cache/*'    \
+    --exclude '/var/cache/*'        \
+    --exclude '/var/tmp/*'          \
+    --exclude '/var/lib/lxcfs/*'    \
+    --exclude '/var/lib/docker/*'   \
+                                    \
+    ::${archive_name}               \
+    /etc                            \
+    /home                           \
+    /root                           \
+    /var                            \
+    /opt                            \

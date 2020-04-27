@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# some helpers and error handling:
+info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
+trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
+bin_dir=$(dirname "$0")
+
+# Expects BORG_REPO and other env variables already set
+if [ -z ${BORG_REPO+x} ]; then
+    info "BORG_REPO is not set"
+    exit 2
+fi
+
+info "Starting backup (BORG_DRY_RUN=${BORG_DRY_RUN})"
+"$bin_dir/borg-create-full"
+backup_exit=$?
+
+info "Pruning repository"
+"$bin_dir/borg-prune-auto"
+prune_exit=$?
+
+# use highest exit code as global exit code
+global_exit=$(( backup_exit > prune_exit ? backup_exit : prune_exit ))
+
+if [ ${global_exit} -eq 0 ]; then
+    info "Backup and Prune finished successfully"
+elif [ ${global_exit} -eq 1 ]; then
+    info "Backup and/or Prune finished with warnings"
+else
+    info "Backup and/or Prune finished with errors"
+fi
+
+exit ${global_exit}
