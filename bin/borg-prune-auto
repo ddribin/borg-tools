@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Use the `prune` subcommand to maintain 7 daily, 4 weekly, 12 monthly, and 1 yearly
+# Use the `prune` subcommand to maintain 7 daily, 4 weekly, 12 monthly, and 2 yearly
 # archives of THIS machine. The '{hostname}-auto-' prefix is very important to
 # limit prune's operation to this machine's automatic archives and not apply to
 # other machines' archives also:
@@ -17,4 +17,4 @@ borg prune                          \
     --keep-daily    7               \
     --keep-weekly   4               \
     --keep-monthly  12              \
-    --keep-yearly   1               \
+    --keep-yearly   2               \
