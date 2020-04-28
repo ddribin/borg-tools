@@ -4,14 +4,17 @@
 # the machine this script is currently running on:
 
 # If --dry-run is on then --stats needs to be off
-stats_opt=${BORG_DRY_RUN:=--stats}
+stats_opt=${DD_BORG_DRY_RUN:=--stats}
+
+# Allow hostname override
+DD_BORG_HOSTNAME=${DD_BORG_HOSTNAME:='{hostname}'}
 
 # Only auto labels are pruned
-BORG_ARCHIVE_LABEL=${BORG_ARCHIVE_LABEL:-'auto'}
-archive_name="{hostname}-${BORG_ARCHIVE_LABEL}-{now}"
+DD_BORG_ARCHIVE_LABEL=${DD_BORG_ARCHIVE_LABEL:-'auto'}
+archive_name="${DD_BORG_HOSTNAME}-${DD_BORG_ARCHIVE_LABEL}-{now}"
 
 borg create                         \
-    ${BORG_DRY_RUN}                 \
+    ${DD_BORG_DRY_RUN}              \
     --verbose                       \
     --filter AME                    \
     --list                          \

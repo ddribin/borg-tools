@@ -5,10 +5,14 @@
 # limit prune's operation to this machine's automatic archives and not apply to
 # other machines' archives also:
 
+# Allow hostname override
+DD_BORG_HOSTNAME=${DD_BORG_HOSTNAME:='{hostname}'}
+archive_prefix="${DD_BORG_HOSTNAME}-auto-"
+
 borg prune                          \
-    ${BORG_DRY_RUN}                 \
+    ${DD_BORG_DRY_RUN}              \
     --list                          \
-    --prefix '{hostname}-auto-'     \
+    --prefix "${archive_prefix}"    \
     --show-rc                       \
     --keep-daily    7               \
     --keep-weekly   4               \

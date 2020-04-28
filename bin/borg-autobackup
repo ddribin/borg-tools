@@ -11,7 +11,7 @@ if [ -z ${BORG_REPO+x} ]; then
     exit 2
 fi
 
-info "Starting backup (BORG_DRY_RUN=${BORG_DRY_RUN})"
+info "Starting backup (DD_BORG_DRY_RUN=${DD_BORG_DRY_RUN})"
 "$bin_dir/borg-create-full"
 backup_exit=$?
 
