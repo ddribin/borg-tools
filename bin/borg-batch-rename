@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'ostruct'
+
+COMMAND = File.basename($0)
+USAGE = "Usage: #{COMMAND} [OPTIONS] <pattern> <replacement>"
+
+options = OpenStruct.new
+options.dry_run = false
+options.input_file = nil
+opts = OptionParser.new do |opts|
+  opts.banner = USAGE
+  opts.on("-n", "--dry-run", "Dry run") do
+    options.dry_run = true
+  end
+  opts.on("-i", "--input-file [FILE]", "Use input file instead of running borg list") do |file|
+    options.input_file = file
+  end
+end
+opts.parse!(ARGV)
+
+if ARGV.length != 2
+  STDERR.puts USAGE
+  exit 1
+end
+pattern_string = ARGV[0]
+replacement = ARGV[1]
+
+if options.input_file.nil?
+  puts "Getting archive list"
+  archive_string = %x{borg list --short}
+else
+  archive_string = File.read(options.input_file)
+end
+archives = archive_string.split("\n")
+
+pattern = Regexp.new(pattern_string)
+archives.each do |archive|
+  new_archive = archive.sub(pattern, replacement)
+  next if (archive == new_archive)
+  command = %W[borg rename ::#{archive} #{new_archive}]
+  if (options.dry_run) then
+    puts "Would rename #{archive} to #{new_archive}"
+    # puts "Command: #{command}"
+  else
+    puts "Renaming #{archive} to #{new_archive}"
+    system *command
+  end
+end
