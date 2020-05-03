@@ -2,6 +2,20 @@
 
 Some scripts I wrote to help automate backups via [Borg](https://www.borgbackup.org/). I started off using the example script in the manual, but gradually added some features like dry run support and creating snapshot archives that would not be automatically pruned.
 
+Also, all repository access environment variables have been pulled out and must be set separately, which makes these scripts more reusable. I have wrapper scripts for the separate repositories, for example, here's a script called `bu-borg-local`:
+
+    % cat ~/bin/bu-borg-local 
+    #!/bin/sh
+    
+    export BORG_REPO='/mnt/backup/borg'
+    export BORG_PASSPHRASE='secret-passphrase'
+    
+    exec "$@"
+
+Which can be used to run the other scripts run like this:
+
+    % bu-borg-local borg-autobackup
+
 ## borg-autobackup
 
 A script to automatically do a full backup and prune automatically created backups. Runs `borg-create-full` and `borg-prune-auto`. This is suitable for a cron job script.
@@ -12,7 +26,7 @@ Creates a "full" backup of a machine, backing up all of the most important direc
 
 ## borg-prune-auto
 
-Prunes automatically created archives to a policy. Automatically created archives have the prefix `{hostname}-auto-`.
+Prunes automatically created archives to a policy. Automatically created archives have the prefix `{hostname}-auto-`. The hostname can be overridden with the `DD_BORG_HOSTNAME` environment variable.
 
 ## borg-batch-rename
 
