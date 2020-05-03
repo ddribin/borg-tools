@@ -18,7 +18,7 @@ Which can be used to run the other scripts run like this:
 
 ## borg-autobackup
 
-A script to automatically do a full backup and prune automatically created backups. Runs `borg-create-full` and `borg-prune-auto`. This is suitable for a cron job script.
+A script to automatically do a full backup and prune. Runs `borg-create-full` and `borg-prune-auto`. This is useful for a cron job script.
 
 ## borg-create-full
 
