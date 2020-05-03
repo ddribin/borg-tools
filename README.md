@@ -12,9 +12,13 @@ Also, all repository access environment variables have been pulled out and must 
     
     exec "$@"
 
-Which can be used to run the other scripts run like this:
+Which can be used to run these scripts:
 
     % bu-borg-local borg-autobackup
+
+Or any Borg command like this:
+
+    % bu-borg-local borg list
 
 ## borg-autobackup
 
