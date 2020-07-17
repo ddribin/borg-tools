@@ -14,27 +14,27 @@ Also, all repository access environment variables have been pulled out and must 
 
 Which can be used to run these scripts:
 
-    % bu-borg-local borg-autobackup
+    % bu-borg-local borg-cron-backup
 
 Or any Borg command like this:
 
     % bu-borg-local borg list
 
-## borg-autobackup
+## borg-cron-backup
 
-A script to automatically do a full backup and prune. Runs `borg-create-full` and `borg-prune-auto`. This is useful for a cron job script.
+Runs `borg-create-full` and `borg-prune-auto` to create and prune a full backup of a machine. Intended to run as a cron job, but can be run manual for testing.
 
 ## borg-create-full
 
-Creates a "full" backup of a machine, backing up all of the most important directories. By default, it names archives `{hostname}-auto-{now}`. The `auto` in the middle allows creating archives that are not considered when pruning. This allows keeping some archives indefinitely. The hostname can be overridden with the `DD_BORG_HOSTNAME` environment variable. The `auto` label can be overridden with the `DD_BORG_ARCHIVE_LABEL` environment variable.
+A wrapper around `borg create` which creates a "full" backup of a machine, backing up all of the most important directories. By default, it names archives `{hostname}-auto-{now}`. The `auto` in the middle allows creating archives that are not considered when pruning. This allows keeping some archives indefinitely. The hostname can be overridden with the `DD_BORG_HOSTNAME` environment variable. The `auto` label can be overridden with the `DD_BORG_ARCHIVE_LABEL` environment variable.
 
 ## borg-prune-auto
 
-Prunes automatically created archives to a policy. Automatically created archives have the prefix `{hostname}-auto-`. The hostname can be overridden with the `DD_BORG_HOSTNAME` environment variable.
+A wrapper around `borg prune` which prunes automatically created archives to a policy. Automatically created archives have the prefix `{hostname}-auto-`. The hostname can be overridden with the `DD_BORG_HOSTNAME` environment variable.
 
 ## borg-batch-rename
 
-Renames all archives according to a regular expression. For example, this would rename the hostname:
+A wrapper around `borg rename` which can rename all archives according to a regular expression. For example, this would rename the hostname:
 
         % borg-batch-rename 'host1-(.*)' 'host2-\1`
 
