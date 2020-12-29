@@ -14,7 +14,7 @@ borg prune                          \
     --list                          \
     --prefix "${archive_prefix}"    \
     --show-rc                       \
-    --keep-daily    7               \
-    --keep-weekly   4               \
+    --keep-daily    14              \
+    --keep-weekly   8               \
     --keep-monthly  12              \
     --keep-yearly   2               \
