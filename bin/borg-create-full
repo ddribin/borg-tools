@@ -28,7 +28,7 @@ borg create                         \
     --exclude '/var/lib/lxcfs/*'    \
     --exclude '/var/lib/docker/*'   \
                                     \
-    ::${archive_name}               \
+    ::"${archive_name}"             \
     /etc                            \
     /home                           \
     /root                           \
