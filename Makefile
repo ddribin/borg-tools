@@ -11,6 +11,8 @@ BREW = brew
 BREW_CELLAR = $(shell $(BREW) --cellar)
 BREW_PROJECT_DIR = "$(BREW_CELLAR)/$(PROJECT_NAME)/$(PROJECT_VERSION)"
 
+PREFIX = /usr/local
+
 .PHONY: build dist install install-encap install-brew clean
 
 # Default
@@ -22,6 +24,10 @@ build: FORCE
 	$(RSYNC) -a --delete bin/ build/$(FULLNAME)/bin
 
 install: build
+	echo "Installing into $(PREFIX)"
+	$(RSYNC) -rl --delete "build/$(FULLNAME)/" "$(PREFIX)"
+
+install-brew: build
 	@if [ -e "$(BREW_PROJECT_DIR)" ]; then \
 		$(BREW) unlink $(PROJECT_NAME); \
 	fi
