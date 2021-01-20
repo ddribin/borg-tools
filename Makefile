@@ -24,7 +24,7 @@ build: FORCE
 	$(RSYNC) -a --delete bin/ build/$(FULLNAME)/bin
 
 install: build
-	echo "Installing into $(PREFIX)"
+	@echo "Installing into $(PREFIX)"
 	$(RSYNC) -rl --delete "build/$(FULLNAME)/" "$(PREFIX)"
 
 install-brew: build
@@ -43,7 +43,8 @@ clean:
 	$(RM) -r build dist
 
 help:
-	@echo "Run 'make install' to install into brew"
+	@echo "Run 'make install' to install into PREFIX"
+	@echo "Run 'make install-brew' to install into Homebrew"
 	@echo "Run 'make dist' to build a tar archive"
 	@echo "Run 'make build' to create the staging directory for build and dist"
 	@echo "Run 'make clean' to cleanup generated files"
