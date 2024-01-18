@@ -19,6 +19,10 @@ info "Pruning repository"
 "$bin_dir/borg-prune-auto"
 prune_exit=$?
 
+# Actually free up the pruned disk space
+info "Compcating repository"
+borg compact
+
 # use highest exit code as global exit code
 global_exit=$(( backup_exit > prune_exit ? backup_exit : prune_exit ))
 
