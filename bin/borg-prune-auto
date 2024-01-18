@@ -9,12 +9,15 @@
 DD_BORG_HOSTNAME=${DD_BORG_HOSTNAME:='{hostname}'}
 archive_prefix="${DD_BORG_HOSTNAME}-auto-"
 
-borg prune                          \
-    "${DD_BORG_DRY_RUN}"            \
-    --list                          \
-    --prefix "${archive_prefix}"    \
-    --show-rc                       \
-    --keep-daily    14              \
-    --keep-weekly   8               \
-    --keep-monthly  12              \
-    --keep-yearly   2               \
+borg prune                                      \
+    "${DD_BORG_DRY_RUN}"                        \
+    --list                                      \
+    --glob-archives "${archive_prefix} *"       \
+    --show-rc                                   \
+    --keep-daily    14                          \
+    --keep-weekly   8                           \
+    --keep-monthly  12                          \
+    --keep-yearly   2
+
+# Actually free up the pruned disk space
+borg compact
