@@ -10,8 +10,8 @@ if [ -z ${BORG_REPO+x} ]; then
     exit 2
 fi
 
-info "Checking respository"
-borg check
+info "Checking repository"
+borg check --show-rc
 check_exit=$?
 
 global_exit=$check_exit 
