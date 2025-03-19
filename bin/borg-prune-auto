@@ -1,9 +1,13 @@
 #!/bin/sh
 
-# Use the `prune` subcommand to maintain 7 daily, 4 weekly, 12 monthly, and 2 yearly
+# Use the `prune` subcommand to maintain 14 daily, 8 weekly, 12 monthly, and 2 yearly
 # archives of THIS machine. The '{hostname}-auto-' prefix is very important to
 # limit prune's operation to this machine's automatic archives and not apply to
-# other machines' archives also:
+# other machines' archives.
+
+# Enable modern exit codes (requires borg 1.4.0)
+BORG_EXIT_CODES=${BORG_EXIT_CODES:=modern}
+export BORG_EXIT_CODES
 
 # Allow hostname override
 DD_BORG_HOSTNAME=${DD_BORG_HOSTNAME:='{hostname}'}

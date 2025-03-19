@@ -1,7 +1,11 @@
 #!/bin/sh
 
 # Backup the most important directories into an archive named after
-# the machine this script is currently running on:
+# the machine this script is currently running on.
+
+# Enable modern exit codes (requires borg 1.4.0)
+BORG_EXIT_CODES=${BORG_EXIT_CODES:=modern}
+export BORG_EXIT_CODES
 
 # If --dry-run is on then --stats needs to be off
 stats_opt=${DD_BORG_DRY_RUN:=--stats}
@@ -14,11 +18,11 @@ DD_BORG_ARCHIVE_LABEL=${DD_BORG_ARCHIVE_LABEL:-'auto'}
 archive_name="${DD_BORG_HOSTNAME}-${DD_BORG_ARCHIVE_LABEL}-{now}"
 
 borg create                         \
-    ${DD_BORG_DRY_RUN}              \
+    "${DD_BORG_DRY_RUN}"            \
     --verbose                       \
     --filter AME                    \
     --list                          \
-    ${stats_opt}                    \
+    "${stats_opt}"                  \
     --show-rc                       \
     --compression lz4               \
     --exclude-caches                \

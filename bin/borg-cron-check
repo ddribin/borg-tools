@@ -4,6 +4,10 @@
 info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
 trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
 
+# Enable modern exit codes (requires borg 1.4.0)
+BORG_EXIT_CODES=${BORG_EXIT_CODES:=modern}
+export BORG_EXIT_CODES
+
 # Expects BORG_REPO and other env variables already set
 if [ -z ${BORG_REPO+x} ]; then
     info "BORG_REPO is not set"
